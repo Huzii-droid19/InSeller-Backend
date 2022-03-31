@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "huzii1911*",
+    "database": "inseller_development",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "huzii1911*",
+    "database": "inseller_test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "gxguephpkujdjw",
+    "password": "f3002681431edd2ef37aead4006731a488a38b9dec0ce4ae542c187c24130755",
+    "database": "db3vnor8gop8fm",
+    "host": "ec2-3-222-49-168.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "rejectUnauthorized": false
+      }
+    },
+    "freezeTableName": true
+  }
+}

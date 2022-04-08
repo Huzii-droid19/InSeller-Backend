@@ -36,11 +36,12 @@ exports.getAll = async (req, res) => {
       } else {
         return res.status(400).json({
           message: "Store categories not fetched",
+          categories: [],
         });
       }
     })
     .catch((err) => {
-      return res.status(400).json({
+      return res.status(500).json({
         message: "Error occured while fetching store categories",
         error: err.message,
       });

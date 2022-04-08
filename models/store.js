@@ -9,13 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Store.belongsTo(models.StoreURL, {
-        foreignKey: "url_id",
-        as: "url",
-      });
+
       Store.belongsTo(models.StoreCategory, {
         foreignKey: "category_id",
         as: "category",
+      });
+      Store.hasMany(models.Item, {
+        foreignKey: "store_id",
+        as: "items",
+      });
+      Store.hasMany(models.ItemCategory, {
+        foreignKey: "store_id",
+        as: "itemcategories",
       });
     }
   }
@@ -26,8 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       location: DataTypes.GEOMETRY,
       password: DataTypes.STRING,
-      url_id: DataTypes.INTEGER,
+      business_image_url: DataTypes.STRING,
+      url_name: DataTypes.STRING,
       category_id: DataTypes.INTEGER,
+      business_image_url: DataTypes.STRING,
+      delivery_charges: DataTypes.INTEGER,
     },
     {
       sequelize,

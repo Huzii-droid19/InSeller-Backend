@@ -4,7 +4,7 @@ const models = require("../models");
 const verifyToken = async (req, res, next) => {
   const token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(403).json({
+    return res.status(400).json({
       message: "No token provided",
     });
   }

@@ -4,28 +4,20 @@ const bcrypt = require("bcrypt");
 
 // signup and create store
 exports.signup = async (req, res) => {
-  const {
-    name,
-    phone_number,
-    address,
-    location,
-    url_name,
-    category_id,
-    password,
-  } = req.body;
+  const { name, phone_number, address, location, category_id, password } =
+    req.body;
   const point = {
     type: "Point",
     coordinates: [location.longitude, location.latitude],
   };
-  const url = await models.StoreURL.create({
-    url_name: url_name,
-  });
+  const url_name =
+    name.replace(/\s+/g, "-").toLowerCase() + Math.floor(Math.random() * 10000);
   await models.Store.create({
     name: name,
     phone_number: phone_number,
     address: address,
     location: point,
-    url_id: url.id,
+    url_name: url_name,
     category_id,
     password: bcrypt.hashSync(password, 10),
   })
@@ -54,30 +46,30 @@ exports.signup = async (req, res) => {
     });
 };
 
-// check store url if exists
-exports.checkURL = async (req, res) => {
-  const { url_name } = req.params;
-  await models.StoreURL.findOne({
-    where: { url_name: url_name },
-  })
-    .then((url) => {
-      if (url) {
-        return res.status(200).json({
-          message: "URL already exists",
-        });
-      } else {
-        return res.status(400).json({
-          message: "URL not exists",
-        });
-      }
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        message: "Error occured while checking URL",
-        error: err.message,
-      });
-    });
-};
+// // check store url if exists
+// exports.checkURL = async (req, res) => {
+//   const { url_name } = req.params;
+//   await models.StoreURL.findOne({
+//     where: { url_name: url_name },
+//   })
+//     .then((url) => {
+//       if (url) {
+//         return res.status(200).json({
+//           message: "URL already exists",
+//         });
+//       } else {
+//         return res.status(400).json({
+//           message: "URL not exists",
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       return res.status(400).json({
+//         message: "Error occured while checking URL",
+//         error: err.message,
+//       });
+//     });
+// };
 
 // sign into store
 exports.signIn = async (req, res) => {

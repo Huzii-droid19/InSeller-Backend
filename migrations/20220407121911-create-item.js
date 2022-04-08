@@ -1,8 +1,7 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.sequelize.query("CREATE EXTENSION postgis;");
-    await queryInterface.createTable("Stores", {
+    await queryInterface.createTable("Items", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,39 +12,47 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      phone_number: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      address: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      location: {
-        allowNull: false,
-        type: Sequelize.GEOMETRY,
-      },
-      business_image_url: {
-        allowNull: true,
-        type: Sequelize.STRING,
-      },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      url_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       category_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: { model: "StoreCategories", key: "id" },
-        onDelete: "CASCADE",
+        references: {
+          model: "ItemCategories",
+          key: "id",
+        },
+        onDelete: "cascade",
       },
-      delivery_charges: {
+      description: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      selling_price: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      discount_price: {
         allowNull: true,
         type: Sequelize.INTEGER,
+      },
+      cost_price: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+      },
+      unit: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      quantity: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+      },
+      store_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Stores",
+          key: "id",
+        },
+        onDelete: "cascade",
       },
       createdAt: {
         allowNull: false,
@@ -58,7 +65,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Stores");
-    await queryInterface.sequelize.query("DROP EXTENSION postgis;");
+    await queryInterface.dropTable("Items");
   },
 };

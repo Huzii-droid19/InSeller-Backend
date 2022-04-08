@@ -35,5 +35,10 @@ app.use((req, res, next) => {
 app.use("/", express.static("public"));
 app.use("/api/user/store", require("./routes/seller.routes"));
 app.use("/api/admin/store-category", require("./routes/store-category.routes"));
+app.use("/api/user/store/item", require("./routes/item.routes"));
+app.use(
+  "/api/user/store/item/category",
+  require("./routes/item-category.routes")
+);
 
 app.listen(PORT, () => console.log(`Listening to PORT ${PORT}`));

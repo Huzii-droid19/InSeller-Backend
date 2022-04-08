@@ -9,7 +9,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "db-create": "npx sequelize-cli db:drop && npx sequelize-cli db:create"
+    "db:create": "npx sequelize-cli db:drop && npx sequelize-cli db:create"
   },
   "author": "",
   "license": "ISC",

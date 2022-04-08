@@ -9,7 +9,7 @@ router.post(
   [verifySignUp.checkDuplicatePhoneNumber],
   controller.signup
 );
-router.get("/check-url/:url_name", controller.checkURL);
+// router.get("/check-url/:url_name", controller.checkURL);
 router.post("/signin", controller.signIn);
 
 module.exports = router;

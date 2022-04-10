@@ -13,10 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "category_id",
         as: "items",
       });
-      ItemCategory.hasOne(models.CategoryImage, {
-        foreignKey: "category_id",
-        as: "image",
-      });
       ItemCategory.belongsTo(models.Store, {
         foreignKey: "store_id",
         as: "store",
@@ -27,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       store_id: DataTypes.INTEGER,
+      image: DataTypes.STRING,
     },
     {
       sequelize,

@@ -11,7 +11,9 @@ exports.createItem = async (req, res) => {
     unit,
     quantity,
     store_id,
+    images,
   } = req.body;
+  console.log(req.body);
   await models.Item.create({
     name: name,
     category_id: category_id,
@@ -23,11 +25,32 @@ exports.createItem = async (req, res) => {
     quantity: quantity,
     store_id: store_id,
   })
-    .then((result) => {
+    .then(async (result) => {
       if (result) {
+        if (images.length > 0) {
+          for (let i = 0; i < images.length; i++) {
+            models.ItemImage.create({
+              item_id: result.id,
+              image: images[i],
+            });
+          }
+        }
+        const newItem = await models.Item.findOne({
+          where: {
+            id: result.id,
+          },
+          include: [
+            {
+              model: models.ItemImage,
+              attributes: ["image"],
+              as: "images",
+            },
+          ],
+        });
+
         res.status(200).json({
           message: "Item Added Successfully",
-          item: result,
+          item: newItem,
         });
       } else {
         res.status(400).json({
@@ -49,6 +72,13 @@ exports.getAllItems = async (req, res) => {
     where: {
       store_id: req.params.store_id,
     },
+    include: [
+      {
+        model: models.ItemImage,
+        attributes: ["image"],
+        as: "images",
+      },
+    ],
   })
     .then((result) => {
       if (result.length > 0) {

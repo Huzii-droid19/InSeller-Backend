@@ -1,9 +1,11 @@
 const models = require("../models");
 
 exports.createCategory = async (req, res) => {
+  console.log(req.body);
   await models.ItemCategory.create({
     name: req.body.name,
     store_id: req.body.store_id,
+    image: req.body.image,
   })
     .then((result) => {
       res.status(200).json({

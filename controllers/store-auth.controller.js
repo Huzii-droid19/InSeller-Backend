@@ -46,31 +46,6 @@ exports.signup = async (req, res) => {
     });
 };
 
-// // check store url if exists
-// exports.checkURL = async (req, res) => {
-//   const { url_name } = req.params;
-//   await models.StoreURL.findOne({
-//     where: { url_name: url_name },
-//   })
-//     .then((url) => {
-//       if (url) {
-//         return res.status(200).json({
-//           message: "URL already exists",
-//         });
-//       } else {
-//         return res.status(400).json({
-//           message: "URL not exists",
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       return res.status(400).json({
-//         message: "Error occured while checking URL",
-//         error: err.message,
-//       });
-//     });
-// };
-
 // sign into store
 exports.signIn = async (req, res) => {
   await models.Store.findOne({
@@ -103,6 +78,33 @@ exports.signIn = async (req, res) => {
     .catch((err) => {
       return res.status(400).json({
         message: "Error occured while logging in",
+        error: err.message,
+      });
+    });
+};
+
+exports.getStoreByURL = async (req, res) => {
+  await models.Store.findOne({
+    where: {
+      url_name: req.params.url_name,
+    },
+    attributes: ["id", "name", "url_name"],
+  })
+    .then((store) => {
+      if (store) {
+        return res.status(200).json({
+          message: "Store fetched successfully",
+          store: store,
+        });
+      } else {
+        return res.status(400).json({
+          message: "Store not found",
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Error occured while fetching store",
         error: err.message,
       });
     });

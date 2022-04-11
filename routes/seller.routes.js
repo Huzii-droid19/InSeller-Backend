@@ -12,4 +12,6 @@ router.post(
 // router.get("/check-url/:url_name", controller.checkURL);
 router.post("/signin", controller.signIn);
 
+router.get("/get-store-by-url/:url_name", controller.getStoreByURL);
+
 module.exports = router;

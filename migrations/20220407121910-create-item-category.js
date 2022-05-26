@@ -16,6 +16,10 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
+      object_key: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       store_id: {
         allowNull: false,
         type: Sequelize.INTEGER,

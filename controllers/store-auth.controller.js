@@ -26,10 +26,13 @@ exports.signup = async (req, res) => {
         const token = jwt.sign({ id: store.id }, process.env.STORE_SECERET, {
           expiresIn: "1d",
         });
+        const user = {
+          ...store.dataValues,
+          accessToken: token,
+        };
         return res.status(200).json({
           message: "Store created successfully",
-          accessToken: token,
-          user: store,
+          user: user,
         });
       } else {
         return res.status(400).json({
@@ -52,6 +55,13 @@ exports.signIn = async (req, res) => {
     where: {
       phone_number: req.body.phone_number,
     },
+    include: [
+      {
+        model: models.StoreCategory,
+        as: "category",
+        attributes: ["name"],
+      },
+    ],
   })
     .then((store) => {
       if (store) {
@@ -59,10 +69,13 @@ exports.signIn = async (req, res) => {
           const token = jwt.sign({ id: store.id }, process.env.STORE_SECERET, {
             expiresIn: "1d",
           });
+          const user = {
+            ...store.dataValues,
+            accessToken: token,
+          };
           return res.status(200).json({
             message: "Store logged in successfully",
-            accessToken: token,
-            user: store,
+            user: user,
           });
         } else {
           return res.status(400).json({
@@ -76,7 +89,7 @@ exports.signIn = async (req, res) => {
       }
     })
     .catch((err) => {
-      return res.status(400).json({
+      return res.status(500).json({
         message: "Error occured while logging in",
         error: err.message,
       });

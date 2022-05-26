@@ -17,6 +17,10 @@ module.exports = {
         },
         onDelete: "cascade",
       },
+      object_key: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       image: {
         allowNull: false,
         type: Sequelize.STRING,

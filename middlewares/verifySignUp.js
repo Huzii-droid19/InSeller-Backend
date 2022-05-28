@@ -6,11 +6,7 @@ const checkDuplicatePhoneNumber = async (req, res, next) => {
     where: { phone_number: phone_number },
   });
   if (store) {
-    res.status(400).send({
-      message: "Phone number already existed",
-      accessToken: null,
-      user: null,
-    });
+    res.status(400).send("Phone number already existed");
     return;
   }
   next();

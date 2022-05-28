@@ -23,6 +23,7 @@ exports.signup = async (req, res) => {
   })
     .then((store) => {
       if (store) {
+        console;
         const token = jwt.sign({ id: store.id }, process.env.STORE_SECERET, {
           expiresIn: "1d",
         });
@@ -35,17 +36,11 @@ exports.signup = async (req, res) => {
           user: user,
         });
       } else {
-        return res.status(400).json({
-          message: "Store not created due to bad request",
-        });
+        return res.status(400).json("Store not created due to bad request");
       }
     })
     .catch((err) => {
-      return res.status(400).json({
-        message:
-          "Error occured while creating a store, please contact adminstrator or report it to playstore",
-        error: err.message,
-      });
+      return res.status(500).json(err.message);
     });
 };
 

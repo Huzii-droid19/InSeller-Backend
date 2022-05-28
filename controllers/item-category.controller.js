@@ -65,10 +65,7 @@ exports.getAllCategories = async (req, res) => {
   })
     .then((result) => {
       if (result.length > 0) {
-        res.status(200).json({
-          message: "Categories Fetched Successfully",
-          categories: result,
-        });
+        res.status(200).json(result);
       } else {
         res.status(404).json({
           message: "No Categories found",
@@ -160,6 +157,7 @@ exports.editCategory = async (req, res) => {
     if (category) {
       if (req.file) {
         if (category.image) {
+          console.log("image here");
           s3.deleteObject(
             {
               Bucket: process.env.AMAZON_BUCKET_NAME,
@@ -174,41 +172,42 @@ exports.editCategory = async (req, res) => {
               }
             }
           );
-          s3.upload(
-            {
-              Bucket: process.env.AMAZON_BUCKET_NAME,
-              Key: `Categories/${uuidv4()}.${path.extname(
-                req.file.originalname
-              )}`,
-              Body: req.file.buffer,
-              ACL: "public-read",
-            },
-            async (err, data) => {
-              if (err) {
-                return res.status(500).json({
-                  message: "Error Occured while uploading image",
-                  error: err.message,
-                });
-              } else {
-                await models.ItemCategory.update(
-                  {
-                    name: req.body.name,
-                    image: data.Location,
-                    object_key: data.Key,
-                  },
-                  {
-                    where: {
-                      id: req.body.id,
-                    },
-                  }
-                );
-                res.status(200).json({
-                  message: "Category Updated Successfully",
-                });
-              }
-            }
-          );
         }
+
+        s3.upload(
+          {
+            Bucket: process.env.AMAZON_BUCKET_NAME,
+            Key: `Categories/${uuidv4()}.${path.extname(
+              req.file.originalname
+            )}`,
+            Body: req.file.buffer,
+            ACL: "public-read",
+          },
+          async (err, data) => {
+            if (err) {
+              return res.status(500).json({
+                message: "Error Occured while uploading image",
+                error: err.message,
+              });
+            } else {
+              await models.ItemCategory.update(
+                {
+                  name: req.body.name,
+                  image: data.Location,
+                  object_key: data.Key,
+                },
+                {
+                  where: {
+                    id: req.body.id,
+                  },
+                }
+              );
+              res.status(200).json({
+                message: "Category Updated Successfully",
+              });
+            }
+          }
+        );
       } else {
         await models.ItemCategory.update(
           {
@@ -238,9 +237,32 @@ exports.editCategory = async (req, res) => {
 };
 
 exports.deleteCategory = async (req, res) => {
-  await models.ItemCategory.destroy({
+  const category = await models.ItemCategory.findOne({
     where: {
       id: req.params.id,
+    },
+  });
+  if (category) {
+    if (category.image) {
+      s3.deleteObject(
+        {
+          Bucket: process.env.AMAZON_BUCKET_NAME,
+          Key: category.object_key,
+        },
+        (err, data) => {
+          if (err) {
+            return res.status(500).json({
+              message: "Error Occured while deleting image",
+              error: err.message,
+            });
+          }
+        }
+      );
+    }
+  }
+  await models.ItemCategory.destroy({
+    where: {
+      id: category.id,
     },
   })
     .then((result) => {

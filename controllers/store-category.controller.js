@@ -27,15 +27,7 @@ exports.createStoreCategory = async (req, res) => {
 exports.getAll = async (req, res) => {
   await models.StoreCategory.findAll()
     .then((categories) => {
-      if (categories.length > 0) {
-        return res.status(200).json({
-          categories,
-        });
-      } else {
-        return res.status(400).json({
-          categories,
-        });
-      }
+      return res.status(200).json(categories);
     })
     .catch((err) => {
       return res.status(500).json({

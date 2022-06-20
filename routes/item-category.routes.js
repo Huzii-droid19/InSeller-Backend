@@ -18,11 +18,6 @@ router.post(
 );
 
 router.get("/get-all-categories/:store_id", controller.getAllCategories);
-router.get(
-  "/get-all-categories-products/:store_id",
-  controller.getAllCategoriesProducts
-);
-router.get("/get-category-by-id/:id", controller.getCategoryById);
 router.put(
   "/update-category/",
   [auth.verifyToken, upload],
@@ -33,5 +28,13 @@ router.delete(
   [auth.verifyToken],
   controller.deleteCategory
 );
+
+// web routes for categories
+
+router.get(
+  "/get-category-and-products-by-url/:url_name",
+  controller.getCategoryAndProductsByStoreUrl
+);
+router.get("/get-cateogory-by-name/:name", controller.getCategoryByName);
 
 module.exports = router;

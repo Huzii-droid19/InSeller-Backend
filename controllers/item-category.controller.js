@@ -63,85 +63,16 @@ exports.getAllCategories = async (req, res) => {
     },
     attributes: ["id", "name", "image", "store_id"],
   })
-    .then((result) => {
-      if (result.length > 0) {
-        res.status(200).json(result);
+    .then((categories) => {
+      if (categories.length > 0) {
+        res.status(200).json(categories);
       } else {
-        res.status(404).json({
-          message: "No Categories found",
-          categories: result,
-        });
+        res.status(404).json(categories);
       }
     })
     .catch((err) => {
       res.status(500).json({
         message: "Error Occured while fetching categories",
-        message: err.message,
-      });
-    });
-};
-
-exports.getAllCategoriesProducts = async (req, res) => {
-  await models.ItemCategory.findAll({
-    where: {
-      store_id: req.params.store_id,
-    },
-    include: [
-      {
-        model: models.Item,
-        as: "items",
-        include: [
-          {
-            model: models.ItemImage,
-            as: "images",
-          },
-        ],
-      },
-    ],
-  })
-    .then((result) => {
-      if (result.length > 0) {
-        res.status(200).json({
-          message: "Categories Fetched Successfully",
-          categories: result,
-        });
-      } else {
-        res.status(404).json({
-          message: "No Categories found",
-          categories: result,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: "Error Occured while fetching categories",
-        message: err.message,
-      });
-    });
-};
-
-exports.getCategoryById = async (req, res) => {
-  await models.ItemCategory.findOne({
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((result) => {
-      if (result) {
-        res.status(200).json({
-          message: "Category Fetched Successfully",
-          category: result,
-        });
-      } else {
-        res.status(400).json({
-          message: "Unable to fetch category",
-          category: result,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        message: "Error Occured while fetching category",
         message: err.message,
       });
     });
@@ -157,7 +88,6 @@ exports.editCategory = async (req, res) => {
     if (category) {
       if (req.file) {
         if (category.image) {
-          console.log("image here");
           s3.deleteObject(
             {
               Bucket: process.env.AMAZON_BUCKET_NAME,
@@ -284,4 +214,91 @@ exports.deleteCategory = async (req, res) => {
         message: err.message,
       });
     });
+};
+
+// web controllers for category
+// get cateogries by urlname
+exports.getCategoriesByStoreId = async (req, res) => {
+  try {
+    const categories = await models.ItemCategory.findAll({
+      where: {
+        store_id: req.params.id,
+      },
+    });
+    return res.status(200).json(categories);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error occured while fetching store",
+      error: error.message,
+    });
+  }
+};
+
+// get all categories and products by url name
+exports.getCategoryAndProductsByStoreUrl = async (req, res) => {
+  try {
+    const store = await models.Store.findOne({
+      where: {
+        url_name: req.params.url_name,
+      },
+    });
+    if (store) {
+      const categories = await models.ItemCategory.findAll({
+        where: {
+          store_id: store.id,
+        },
+        include: [
+          {
+            model: models.Item,
+            as: "items",
+            include: [
+              {
+                model: models.ItemCategory,
+                as: "category",
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json(categories);
+    } else {
+      return res.status(400).json({
+        message: "Store not found",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error occured while fetching store",
+      error: error.message,
+    });
+  }
+};
+
+// get category by name
+exports.getCategoryByName = async (req, res) => {
+  try {
+    const category = await models.ItemCategory.findOne({
+      where: {
+        name: req.params.name,
+      },
+      include: [
+        {
+          model: models.Item,
+          as: "items",
+        },
+      ],
+    });
+    if (category) {
+      return res.status(200).json(category);
+    } else {
+      return res.status(400).json({
+        message: "Category not found",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error occured while fetching category",
+      error: error.message,
+    });
+  }
 };

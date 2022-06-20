@@ -45,6 +45,19 @@ module.exports = {
         allowNull: true,
         type: Sequelize.INTEGER,
       },
+      status: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      image: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+
+      object_key: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       store_id: {
         allowNull: false,
         type: Sequelize.INTEGER,

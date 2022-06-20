@@ -21,13 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "cascade",
         hooks: true,
       });
-      Item.hasMany(models.ItemImage, {
+      Item.hasMany(models.OrderItem, {
         foreignKey: "item_id",
-        as: "images",
-      });
-      Item.hasMany(models.Itemvariant, {
-        foreignKey: "item_id",
-        as: "variants",
+        as: "orderItems",
       });
     }
   }
@@ -41,7 +37,10 @@ module.exports = (sequelize, DataTypes) => {
       cost_price: DataTypes.INTEGER,
       unit: DataTypes.STRING,
       quantity: DataTypes.INTEGER,
+      image: DataTypes.STRING,
+      object_key: DataTypes.STRING,
       store_id: DataTypes.INTEGER,
+      status: DataTypes.BOOLEAN,
     },
     {
       sequelize,

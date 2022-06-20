@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const Pusher = require("pusher");
+
 const bodyParser = require("body-parser");
 
 dotenv.config();
@@ -17,14 +17,6 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const pusher = new Pusher({
-  app_id: "1340392",
-  key: "22e26683e4241e92b80e",
-  secret: "536db42ffd8ba0295af1",
-  cluster: "mt1",
-  useTLS: true,
-});
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -43,5 +35,6 @@ app.use(
   "/api/user/store/item/category",
   require("./routes/item-category.routes")
 );
+app.use("/api/user/store/orders/", require("./routes/order.routes"));
 
 app.listen(PORT, () => console.log(`Listening to PORT ${PORT}`));

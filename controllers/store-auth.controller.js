@@ -91,12 +91,14 @@ exports.signIn = async (req, res) => {
     });
 };
 
+// web routes for store
+// get all store by url name
 exports.getStoreByURL = async (req, res) => {
   await models.Store.findOne({
     where: {
       url_name: req.params.url_name,
     },
-    attributes: ["id", "name", "url_name"],
+    attributes: ["id", "name", "url_name", "delivery_charges", "phone_number"],
   })
     .then((store) => {
       if (store) {

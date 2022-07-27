@@ -1,23 +1,35 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "huzii1911*",
-    "database": "inseller_development",
-    "host": "localhost",
-    "dialect": "postgres"
+    "username": "aycwayiaxynage",
+    "password": "6c5d82733abfee343ea1a6f0517ef4c0733483c5bc64f2e9ea95d07bac2eb802",
+    "database": "d50vkv7j19h312",
+    "host": "ec2-54-225-234-165.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "rejectUnauthorized": false
+      }
+    },
+    "freezeTableName": true
   },
   "test": {
-    "username": "postgres",
-    "password": "huzii1911*",
-    "database": "inseller_test",
-    "host": "localhost",
-    "dialect": "postgres"
+    "username": "aycwayiaxynage",
+    "password": "6c5d82733abfee343ea1a6f0517ef4c0733483c5bc64f2e9ea95d07bac2eb802",
+    "database": "d50vkv7j19h312",
+    "host": "ec2-54-225-234-165.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "rejectUnauthorized": false
+      }
+    },
+    "freezeTableName": true
   },
   "production": {
-    "username": "gxguephpkujdjw",
-    "password": "f3002681431edd2ef37aead4006731a488a38b9dec0ce4ae542c187c24130755",
-    "database": "db3vnor8gop8fm",
-    "host": "ec2-3-222-49-168.compute-1.amazonaws.com",
+    "username": "aycwayiaxynage",
+    "password": "6c5d82733abfee343ea1a6f0517ef4c0733483c5bc64f2e9ea95d07bac2eb802",
+    "database": "d50vkv7j19h312",
+    "host": "ec2-54-225-234-165.compute-1.amazonaws.com",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
